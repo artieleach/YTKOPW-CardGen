@@ -1,8 +1,6 @@
 import os
 import csv
 import textwrap
-from cgi import print_exception
-from logging import exception
 
 from PIL import Image, ImageDraw, ImageFont
 
