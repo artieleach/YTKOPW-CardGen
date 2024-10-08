@@ -14,7 +14,7 @@ title_font = ImageFont.truetype('Poppins/Poppins-LightItalic.ttf', size=32)
 statement_font = ImageFont.truetype('Poppins/Poppins-Bold.ttf', size=64)
 
 def generate_card(text='', card_id=0):
-    image_with_background = Image.new('RGB', size, 'black')
+    image_with_background = Image.new('RGB', size, font_color)
     draw = ImageDraw.Draw(image_with_background)
     draw.rectangle(
         xy=[border, (card_size_x - border_x, card_size_y - border_y)],
@@ -23,7 +23,7 @@ def generate_card(text='', card_id=0):
 
     draw.ellipse(
         xy=[(card_size_x/2-border_x*3.5, card_size_y-border_y*2), (card_size_x/2+border_x*3.5, card_size_y+border_y*2)],
-        fill='black'
+        fill=font_color
     )
 
 
