@@ -76,6 +76,12 @@ fields = []
 rows = []
 
 if __name__ == '__main__':
+    if not os.path.exists("Cards"):
+        os.makedirs("Cards")
+    if not os.path.exists("Poppins"):
+        os.makedirs("Poppins")
+    if not os.path.exists("Source"):
+        os.makedirs("Source")
     with open(f'Source/{os.listdir("Source")[0]}', 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
         fields = next(csv_reader)
