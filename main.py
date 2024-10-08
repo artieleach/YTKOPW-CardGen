@@ -1,6 +1,8 @@
+"""Tool to generate an arbitrary number of cards from a CSV of card data"""
 import os
 import csv
 import textwrap
+import sys
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -12,9 +14,9 @@ font_color = (10, 8, 8)
 title_font = ImageFont.truetype('Poppins/Poppins-LightItalic.ttf', size=32)
 statement_font = ImageFont.truetype('Poppins/Poppins-Bold.ttf', size=64)
 
-def generate_card(text='', card_id=0):
-    # Generates a single card with the given text/card ID
-    # and saves it in the Cards directory
+def generate_card(text='', cur_card_id=0):
+    """ Generates a single card with the given text/card ID
+    and saves it in the Cards directory"""
 
     # Create an empty image, as well as a ImageDraw instance...
     image_with_background = Image.new('RGB', size, font_color)
@@ -48,7 +50,7 @@ def generate_card(text='', card_id=0):
     )
     draw.text(
         xy=(card_size_x / 2, card_size_y - border_y),
-        text=f'{card_id}',
+        text=f'{cur_card_id}',
         fill='white',
         font=title_font,
         anchor='ms'
@@ -70,11 +72,11 @@ def generate_card(text='', card_id=0):
             fill=font_color
         )
         y_text += line_height
-    image_with_background.save(f'Cards/{card_id} - {text}.png')
+    image_with_background.save(f'Cards/{cur_card_id} - {text}.png')
 
 
-if __name__ == '__main__':
-    fields = []
+def main():
+    """Generates the entire card batch"""
     rows = []
     # Creates the needed directories, exits if a source directory is not present.
     if not os.path.exists("Cards"):
@@ -82,20 +84,23 @@ if __name__ == '__main__':
     if not os.path.exists("Poppins"):
         os.makedirs("Poppins")
         print("font missing, exiting")
-        exit()
+        sys.exit()
     if not os.path.exists("Source"):
         os.makedirs("Source")
         print("data missing, exiting")
-        exit()
-    with open(f'Source/{os.listdir("Source")[0]}', 'r') as csv_file:
+        sys.exit()
+    #  pulls data from the CSV
+
+    with open(f'Source/{os.listdir("Source")[0]}', 'r', encoding="UTF-8") as csv_file:
         csv_reader = csv.reader(csv_file)
-        fields = next(csv_reader)
         for row in csv_reader:
             rows.append(row)
     card_id = 0
     for row in rows:
         card_id += 1
         if len(row) > 1 and len(row[1]) > 1:
-            print(f'\"{row[1]}\" okay!')
             generate_card(row[1], card_id)
+            print(f'\"{row[1]}\" okay!')
 
+if __name__ == '__main__':
+    main()
